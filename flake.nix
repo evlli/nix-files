@@ -12,9 +12,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.3.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, home-manager, colmena, ... }:
+  outputs = inputs @ { self, nixpkgs, nixpkgs-unstable, home-manager, colmena, lanzaboote, ... }:
     let
       inherit (self) outputs;
       systems = [ "aarch64-linux" "i686-linux" "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
