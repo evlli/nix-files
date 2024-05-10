@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   imports = [ 
-    ./wayfire.nix 
+#    ./wayfire.nix 
+    ./kde.nix
     ./firefox.nix
     ./non-free.nix
   ];
@@ -16,6 +17,7 @@
   environment.systemPackages = with pkgs; [
     helvum
     wl-clipboard
+    pw-volume
   ];
   security.rtkit.enable = true;
   hardware.bluetooth.enable = true;
