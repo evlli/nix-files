@@ -15,5 +15,8 @@
       wdisplays
       kanshi
       wev
+      swaylock
+      grim
+      slurp
     ];
   }

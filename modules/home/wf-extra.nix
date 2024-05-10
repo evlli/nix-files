@@ -1,0 +1,4 @@
+{ ... }: {
+  services.make.enable = true;
+
+  }
