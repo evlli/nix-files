@@ -4,6 +4,8 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+  
+  services.zfs.autoSnapshot.enable = true;
 
   fileSystems."/" =
     { device = "nyxia-rpool/root";
