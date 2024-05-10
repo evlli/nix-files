@@ -4,7 +4,7 @@
     enable = true;
     libinput.enable = true;
 
-    xkb.layout = "us";
-    xkb.variant = "de";
+    xkb.layout = "de";
+    xkb.variant = "us";
   };
 }
