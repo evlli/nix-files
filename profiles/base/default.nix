@@ -30,7 +30,7 @@
   i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
   console = {
     font = "Lat2-Terminus16";
-    keyMap = lib.mkDefault "de";
+    keyMap = lib.mkDefault "us";
     useXkbConfig = true;
   };
 
@@ -38,9 +38,6 @@
 
   services.openssh = {
     enable = true;
-    extraConfig = ''
-      StreamLocalBindUnlink yes
-    '';
     settings = {
       PermitRootLogin = lib.mkOverride 999 "no";
       PasswordAuthentication = false;
@@ -56,10 +53,7 @@
       ];
       Ciphers = [
         "aes256-gcm@openssh.com"
-        "aes128-gcm@openssh.com"
         "aes256-ctr"
-        "aes192-ctr"
-        "aes128-ctr"
       ];
     };
   };
@@ -69,11 +63,6 @@
       enable = true;
       wheelNeedsPassword = false;
       keepTerminfo = true;
-    };
-
-    acme = {
-      acceptTerms = true;
-      defaults.email = "acme@evl.li";
     };
   };
 
@@ -91,17 +80,6 @@
 
   services.pcscd.enable = true;
 
-  virtualisation.vmVariant = {
-    # following configuration is added only when building VM with build-vm
-    virtualisation = {
-      memorySize = 8192;
-      cores = 6;
-      graphics = true;
-    };
-    users.users.evlli.hashedPassword = "";
-  };
-
-#  programs.fish.enable = true;
   programs.zsh.enable = true;
   # Packages used on all systems
   environment.systemPackages = with pkgs; [
