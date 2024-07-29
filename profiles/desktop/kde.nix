@@ -7,4 +7,10 @@
     xkb.layout = "de";
     xkb.variant = "us";
   };
+  environment.systemPackages = with pkgs.kdePackages; [
+    merkuro
+    pim-sieve-editor
+    kontact
+    marknote
+  ];
 }

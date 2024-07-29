@@ -1,7 +1,7 @@
-{ lib, pkgs, pkgs-unstable, ... }: {
+{ lib, pkgs, nixpkgs-unstable, ... }: {
   programs.neovim = {
     enable = true;
-    package = pkgs-unstable.neovim-unwrapped;
+#    package = nixpkgs-unstable.neovim-unwrapped;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;

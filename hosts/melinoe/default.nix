@@ -3,7 +3,6 @@
     inputs.lanzaboote.nixosModules.lanzaboote
     ./hardware-configuration.nix
     ../../profiles/desktop
-    ./volumes.nix
   ];
 
   deployment.allowLocalDeployment = true;
@@ -26,7 +25,17 @@
       pkiBundle = "/etc/secureboot";
     };
 
-
+  home-manager.users.evlli = {
+    programs.gpg = {
+      enable = true;
+      publicKeys = [
+        {
+          source = "/home/evlli/.password-store/.pubkeys/id@evl.li.pub"; # this key is the root of all trust and is signed by all other keys
+          trust = "ultimate";
+        }
+      ];
+    };
+  };
   networking.networkmanager.enable = true;
   system.stateVersion = "23.11"; # Did you read the comment?
 }

@@ -32,7 +32,7 @@
         "sudo"
       ];
 
-      theme = "essembeh";
+      theme = "alanpeabody";
       };
     };
   }

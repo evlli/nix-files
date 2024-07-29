@@ -1,6 +1,9 @@
 { ... }: {
   imports = [ 
-    ../../modules/home 
+    ./git.nix
+    ./ssh.nix
+    ./zsh.nix
+    ./nvim/default.nix
   ];
 
   programs.git = {
@@ -18,15 +21,16 @@
     };
   home.sessionVariables = {
     EDITOR = "nvim";
+    XDG_DESKTOP_DIR = "$HOME/persist/desktop";
+    XDG_DOWNLOAD_DIR = "$HOME/scratchpad/downloads";
+    XDG_DOCUMENTS_DIR =  "$HOME/persist/documents";
+    XDG_MUSIC_DIR = "$HOME/persist/media/music";
+    XDG_PICTURES_DIR = "$HOME/persist/media/pics";
+    XDG_TEMPLATES_DIR = "$HOME/persist/templates";
+    XDG_VIDEOS_DIR = "$HOME/media/videos";
   };
 
-  programs.gpg = {
-    enable = true;
-    publicKeys = [
-      {
-        source = "/home/evlli/.password-store/.pubkeys/id@evl.li.pub"; # this key is the root of all trust and is signed by all other keys
-        trust = "ultimate";
-      }
-    ];
+  home.file = {
+    ".ssh/card.pub".text = "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBLOrW0Z970f4RbXRYuXNKAkulKLyVApQiqmW8Mk6RWr5V2mJ7wQlsKsFcUPk63WLF5rJAiWo4hqneqLYFFQEf9fUWWNs2K9LPGLaYPfYgJLCNYxx0pVuMEEsMt+IPV24kQ== openpgp:0x4D3B3663";
   };
 }

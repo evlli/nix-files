@@ -1,6 +1,5 @@
 { ... }: {
   imports = [ 
-    ../../modules/home 
 #    .zsh.nix
     ];
 

@@ -5,12 +5,12 @@
     ./firefox.nix
     ./non-free.nix
   ];
-  services.xserver = {
-    enable = true;
+  services = {
     displayManager.sddm.enable = true;
     displayManager.sddm.wayland.enable = true;
     libinput.enable = true;
-
+  };
+  services.xserver = {
     xkb.layout = "de";
     xkb.variant = "us";
   };
@@ -28,7 +28,43 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
+    raopOpenFirewall = true;
   };
+  
+  programs.gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+      enableExtraSocket = true;
+    };
+  services.pcscd.enable = true;
+
+  users = {
+    groups.realtime = { };
+  };
+  services.udev.extraRules = ''
+    KERNEL=="cpu_dma_latency", GROUP="realtime"
+  '';
+  security.pam.loginLimits = [
+    {
+      domain = "@realtime";
+      type = "-";
+      item = "rtprio";
+      value = 98;
+    }
+    {
+      domain = "@realtime";
+      type = "-";
+      item = "memlock";
+      value = "unlimited";
+    }
+    {
+      domain = "@realtime";
+      type = "-";
+      item = "nice";
+      value = -11;
+    }
+  ];
+
 
   services.pipewire.wireplumber.configPackages = [
           (pkgs.writeTextDir "share/wireplumber/bluetooth.lua.d/51-bluez-config.lua" ''

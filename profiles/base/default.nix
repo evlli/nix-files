@@ -1,12 +1,17 @@
-{ lib, pkgs, inputs, ... }: {
+{ inputs, pkgs, lib, config, ... }: {
   imports = [
+#    ../../modules
     ../../users/root
     ../../users/evlli
     inputs.home-manager.nixosModules.home-manager
   ];
+  nixpkgs.overlays = lib.attrValues inputs.self.overlays;
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   deployment.tags = [ pkgs.stdenv.hostPlatform.system ];
   deployment.targetUser = lib.mkDefault "evlli";
+#  deployment.targetHost = lib.mkDefault config.networking.fqdn;
+  deployment.targetPort = lib.mkDefault (lib.head config.services.openssh.ports);
 
   nix = {
     settings = {
@@ -19,6 +24,7 @@
     };
   };
 
+  hardware.enableRedistributableFirmware = true;
   users.mutableUsers = false;
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
@@ -27,7 +33,7 @@
 
   time.timeZone = lib.mkDefault "Europe/Berlin";
 
-  i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
+  i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
   console = {
     font = "Lat2-Terminus16";
     keyMap = lib.mkDefault "us";
@@ -39,46 +45,27 @@
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = lib.mkOverride 999 "no";
       PasswordAuthentication = false;
-      Macs = [
-        "hmac-sha2-512"
-        "hmac-sha2-256"
-      ];
-      KexAlgorithms = [
-        "sntrup761x25519-sha512@openssh.com"
-        "curve25519-sha256"
-        "curve25519-sha256@libssh.org"
-        "diffie-hellman-group-exchange-sha256"
-      ];
-      Ciphers = [
-        "aes256-gcm@openssh.com"
-        "aes256-ctr"
-      ];
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = lib.mkDefault "no";
     };
   };
 
-  security = {
-    sudo = {
-      enable = true;
-      wheelNeedsPassword = false;
-      keepTerminfo = true;
-    };
-  };
+  programs.mosh.enable = true;
+  services.iperf3.enable = true;
+  services.iperf3.openFirewall = true;
 
-  services.fail2ban = {
-    enable = lib.mkDefault true;
-    maxretry = 5;
-  };
-  services.udev.packages = with pkgs; [ libu2f-host yubikey-personalization ];
+  security.sudo.enable = false;
+  security.sudo-rs.enable = true;
+  security.sudo-rs.wheelNeedsPassword = lib.mkDefault false;
 
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    enableExtraSocket = true;
-  };
-
-  services.pcscd.enable = true;
+  networking.useNetworkd = true;
+  networking.nftables.enable = true;
+  networking.useDHCP = false;
+  services.resolved.extraConfig = ''
+    FallbackDNS=
+    Cache=no-negative
+  '';
 
   programs.zsh.enable = true;
   # Packages used on all systems
@@ -102,5 +89,10 @@
     whois
     wireguard-tools
     dnsmasq
+    usbutils
+    binwalk
+    binutils
+    flashrom
+    ranger
   ];
 }
