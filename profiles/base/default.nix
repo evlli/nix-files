@@ -1,16 +1,18 @@
 { inputs, pkgs, lib, config, ... }: {
   imports = [
-#    ../../modules
+    ../../modules
+    inputs.home-manager.nixosModules.home-manager
+    inputs.self.nixosModules.default
+    inputs.sops-nix.nixosModules.sops
     ../../users/root
     ../../users/evlli
-    inputs.home-manager.nixosModules.home-manager
   ];
   nixpkgs.overlays = lib.attrValues inputs.self.overlays;
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
 
   deployment.tags = [ pkgs.stdenv.hostPlatform.system ];
   deployment.targetUser = lib.mkDefault "evlli";
-#  deployment.targetHost = lib.mkDefault config.networking.fqdn;
+  deployment.targetHost = lib.mkDefault config.networking.fqdn;
   deployment.targetPort = lib.mkDefault (lib.head config.services.openssh.ports);
 
   nix = {
@@ -59,6 +61,7 @@
   security.sudo-rs.enable = true;
   security.sudo-rs.wheelNeedsPassword = lib.mkDefault false;
 
+  networking.domain = "evl.li";
   networking.useNetworkd = true;
   networking.nftables.enable = true;
   networking.useDHCP = false;

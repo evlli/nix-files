@@ -1,16 +1,12 @@
-{ pkgs, modulesPath, ... }:
+{ config, pkgs, modulesPath, ... }:
 
 {
   imports = [
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
   ];
 
-  deployment.keys."nextcloud-admin" = {
-    keyCommand = [ "pass" "infra/services/nextcloud/admin" ];
-    group = "nextcloud";
-    user = "nextcloud";
-    destDir = "/etc/";
-    permissions = "0666";
+  evlli.sops.secrets."nextcloud_adminpass" = {
+    owner = "nextcloud";    
   };
 
   services.nextcloud = {
@@ -22,7 +18,7 @@
     database.createLocally = true;
     config = {
       dbtype = "pgsql";
-      adminpassFile = "/etc/nextcloud-admin";
+      adminpassFile = config.sops.secrets."nextcloud_adminpass".path;
     };
 #    phpExtraExtensions = all: [ all.exif ];
     extraApps = {
@@ -70,9 +66,7 @@
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   deployment.targetHost = "100.64.0.109";
-  networking.hostId = "5445e34f";
   networking.hostName = "cloudy";
-
 
   system.stateVersion = "23.11"; # Did you read the comment?
 }
