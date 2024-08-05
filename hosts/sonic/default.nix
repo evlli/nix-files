@@ -1,17 +1,17 @@
-{ config, modulesPath, ... }:
-let
-  vmid = 106;
-in {
-  imports = [
-    (modulesPath + "/virtualisation/proxmox-lxc.nix")
-  ];
-
+{ pkgs, config, ... }:
+{
+  hardware.lxc-in-pve = {
+    enable = true;
+    vmid = 106;
+  };
   services.navidrome = {
     enable = true;
     settings = {
       MusicFolder = "/navimedia/music";
     };
   };
+
+  environment.systemPackages = with pkgs; [ python312  python312Packages.pip ];
 
   services.nginx = {
       enable = true;
@@ -42,11 +42,7 @@ in {
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
-  deployment.targetHost = "100.64.0.${toString vmid}";
-#  deployment.targetUser = "root";
-#  networking.hostId = (builtins.substring 0 8 (builtins.readFile "/etc/machine-id"));
   networking.hostName = "sonic";
-
 
   system.stateVersion = "23.11"; # Did you read the comment?
 }

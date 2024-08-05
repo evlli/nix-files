@@ -1,9 +1,10 @@
 { config, pkgs, modulesPath, ... }:
 
 {
-  imports = [
-    (modulesPath + "/virtualisation/proxmox-lxc.nix")
-  ];
+  hardware.lxc-in-pve = {
+    enable = true;
+    vmid = 109;
+  };
 
   e.sops.secrets."hosts/cloudy/nextcloud_adminpass" = {
     owner = "nextcloud";    
@@ -65,7 +66,6 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
-  deployment.targetHost = "100.64.0.109";
   networking.hostName = "cloudy";
 
   system.stateVersion = "23.11"; # Did you read the comment?

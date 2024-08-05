@@ -1,5 +1,6 @@
 keys:
   - &admin_evlli_pgp 56B96D1C10D68F49E31BB8A18092413A3F6DD75F
+  - &admin_evlli_age age1c4g65eun3kql583z6h0s70pmwpjnx3tfnuvwhj3q4rv5c0c299xsj9khrd
   - &host_sonic age1p5s3cyjwqw0xg3rfljwq5zha36f5j0zysqqjxnqkk3zhhec0zg8szvcq4q
   - &host_cloudy age1els3ygj4gnvtg2thj0zcx4sxlkmlg68rdagjp5lpv8gzw9ealaeqy2gzwx
 
@@ -9,19 +10,22 @@ creation_rules:
       - pgp:
           - *admin_evlli_pgp
         age:
+          - *admin_evlli_age
           - *host_sonic
           - *host_cloudy
 
-  - path_regex: secrets/hosts/sonic/[^/]+\.yaml$
+  - path_regex: secrets/hosts/sonic.yaml
     key_groups:
       - pgp:
           - *admin_evlli_pgp
         age:
+          - *admin_evlli_age
           - *host_sonic
 
-  - path_regex: secrets/hosts/cloudy/[^/]+\.yaml$
+  - path_regex: secrets/hosts/cloud.yaml
     key_groups:
       - pgp:
           - *admin_evlli_pgp
         age:
+          - *admin_evlli_age
           - *host_cloudy
