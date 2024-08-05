@@ -2,7 +2,6 @@
   imports = [
     ../../modules
     inputs.home-manager.nixosModules.home-manager
-    inputs.self.nixosModules.default
     inputs.sops-nix.nixosModules.sops
     ../../users/root
     ../../users/evlli
@@ -12,7 +11,7 @@
 
   deployment.tags = [ pkgs.stdenv.hostPlatform.system ];
   deployment.targetUser = lib.mkDefault "evlli";
-  deployment.targetHost = lib.mkDefault config.networking.fqdn;
+#  deployment.targetHost = lib.mkDefault config.networking.fqdn;
   deployment.targetPort = lib.mkDefault (lib.head config.services.openssh.ports);
 
   nix = {
@@ -61,14 +60,14 @@
   security.sudo-rs.enable = true;
   security.sudo-rs.wheelNeedsPassword = lib.mkDefault false;
 
-  networking.domain = "evl.li";
+#  networking.domain = "evl.li";
   networking.useNetworkd = true;
   networking.nftables.enable = true;
-  networking.useDHCP = false;
-  services.resolved.extraConfig = ''
-    FallbackDNS=
-    Cache=no-negative
-  '';
+#  networking.useDHCP = false;
+#  services.resolved.extraConfig = ''
+#    FallbackDNS=
+#    Cache=no-negative
+#  '';
 
   programs.zsh.enable = true;
   # Packages used on all systems

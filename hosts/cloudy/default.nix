@@ -5,7 +5,7 @@
     (modulesPath + "/virtualisation/proxmox-lxc.nix")
   ];
 
-  evlli.sops.secrets."nextcloud_adminpass" = {
+  e.sops.secrets."hosts/cloudy/nextcloud_adminpass" = {
     owner = "nextcloud";    
   };
 
@@ -18,7 +18,7 @@
     database.createLocally = true;
     config = {
       dbtype = "pgsql";
-      adminpassFile = config.sops.secrets."nextcloud_adminpass".path;
+      adminpassFile = config.sops.secrets."hosts/cloudy/nextcloud_adminpass".path;
     };
 #    phpExtraExtensions = all: [ all.exif ];
     extraApps = {
